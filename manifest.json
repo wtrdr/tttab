@@ -1,0 +1,42 @@
+{
+  "name": "tttab",
+  "description" : "Remember And Restore Your Favorite WebPage.",
+  "version": "1.0",
+  "manifest_version": 2,
+  "permissions": ["activeTab", "declarativeContent", "storage"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["watch.js"]
+    }
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  // "browser_action": {
+  //   "default_popup": "hello.html",
+  //   "default_icon": "hello_extensions.png"
+  // },
+  // "page_action": {
+  //   "default_popup": "popup.html",
+  //   "default_icon": {
+  //     "16": "images/get_started16.png",
+  //     "32": "images/get_started32.png",
+  //     "48": "images/get_started48.png",
+  //     "128": "images/get_started128.png"
+  //   }
+  // },
+  "icons": {
+    "16": "images/get_started16.png",
+    "32": "images/get_started32.png",
+    "48": "images/get_started48.png",
+    "128": "images/get_started128.png"
+  }
+  //"commands": {
+  //  "ttt": {
+  //    "suggested_key": { "default": "T" },
+  //    "description": "launch ttt"
+  //  }
+  //}
+}
