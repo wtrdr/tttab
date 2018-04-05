@@ -1,7 +1,9 @@
 'use strict';
 
-chrome.commands.onCommand.addListener(function(command) {
-  console.log('Command:', command);
+chrome.runtime.onMessage.addListener(function(msg, sender) {
+  console.log('msg:', msg);
+  console.log('sender:', sender);
+  // chrome.tabs.create({url: 'https://yahoo.co.jp'});
 });
 
 //chrome.runtime.onInstalled.addListener(function() {
