@@ -1,23 +1,55 @@
 'use strict';
 
-chrome.runtime.onMessage.addListener(function(msg, sender) {
-  console.log('msg:', msg);
-  console.log('sender:', sender);
-  // chrome.tabs.create({url: 'https://yahoo.co.jp'});
-});
+// commands
+const copyN = n => {
+  getCurrentTab(tab => saveTab(nToKey(n), tab));
+}
 
-//chrome.runtime.onInstalled.addListener(function() {
-//  chrome.storage.sync.set({color: '#3aa757'}, function() {
-//    console.log("The color is green.");
-//  });
-//  chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
-//    chrome.declarativeContent.onPageChanged.addRules([{
-//      conditions: [
-//        new chrome.declarativeContent.PageStateMatcher({
-//          pageUrl: {hostEquals: 'developer.chrome.com'},
-//        })
-//      ],
-//      actions: [new chrome.declarativeContent.ShowPageAction()]
-//    }]);
-//  });
-//});
+const pasteN = n => {
+  restoreTab(nToKey(n), error => error && notify({text: '!'}));
+}
+
+const list = () => {
+  getSavedTabs(tabs => {
+    console.log(convertToArray(tabs));
+  });
+}
+
+// helpers
+const TTTAB_URL_ = 'tttab-url-';
+
+const nToKey = n => {
+  return TTTAB_URL_ + n;
+}
+
+const keyToN = key => {
+  return key.substr(TTTAB_URL_.length);
+}
+
+const selectFunction = name => {
+  if (name === 'copy-n')  return copyN;
+  if (name === 'paste-n') return pasteN;
+  if (name === 'list')    return list;
+  return () => {}; // nothing to do.
+}
+
+const convertToArray = tabs => {
+  return Object.keys(tabs).map(k => ({
+    n: keyToN(k),
+    title: tabs[k].title,
+    url: tabs[k].url
+  }));
+}
+
+const notify = icon => {
+  getCurrentTab(tab => chrome.browserAction.setBadgeText({text: icon.text}));
+}
+
+const run = (functionName, args) => {
+  selectFunction(functionName)(...args);
+}
+
+chrome.runtime.onMessage.addListener(({functionName, args, icon}, sender) => {
+  notify(icon);
+  if (functionName) run(functionName, args);
+});

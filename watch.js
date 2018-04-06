@@ -4,8 +4,10 @@ let current = '';
 
 const tttab = key => {
   current = acceptable(current, key) ? (current + key) : ''
-  if (!executable(current)) return;
-  exec(current) && (current = '');
+  if (!executable(current)) return resetNotification();
+  if (!exec(current)) return;
+  current = '';
+  return
 }
 
 window.addEventListener(
