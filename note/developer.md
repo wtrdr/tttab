@@ -1,4 +1,4 @@
-# (memo) How to create Google Chrome Extensions.
+# (note) How to create Google Chrome Extensions.
 
 ## Requirement
 
