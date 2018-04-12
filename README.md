@@ -11,7 +11,7 @@ This is Chrome Extension to controll your tab easily.
     You can see a [tttr] sign on the extension icon.
 1. Type `ttt[0-9]`.  
     Restore your saved tab on a new window.  
-1. Press `Ctrl + Shift + F`.  
+1. Press `Ctrl + Shift + T`.  
     You can see a list which has your tabs url.  
 
 ## NOTE
