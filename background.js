@@ -1,48 +1,18 @@
 'use strict';
 
 // commands
-const copyN = n => {
-  getCurrentTab(tab => saveTab(nToKey(n), tab));
+const recN = n => {
+  getCurrentTab(tab => saveTab(n, tab));
 }
 
-const pasteN = n => {
-  restoreTab(nToKey(n), error => error && notify({text: '!'}));
-}
-
-const list = () => {
-  getSavedTabs(tabs => {
-    console.log(convertToArray(tabs));
-  });
-}
-
-// helpers
-const TTTAB_URL_ = 'tttab-url-';
-
-const nToKey = n => {
-  return TTTAB_URL_ + n;
-}
-
-const keyToN = key => {
-  return key.substr(TTTAB_URL_.length);
+const playN = n => {
+  restoreTab(n);
 }
 
 const selectFunction = name => {
-  if (name === 'copy-n')  return copyN;
-  if (name === 'paste-n') return pasteN;
-  if (name === 'list')    return list;
+  if (name === 'rec-n')  return recN;
+  if (name === 'play-n') return playN;
   return () => {}; // nothing to do.
-}
-
-const convertToArray = tabs => {
-  return Object.keys(tabs).map(k => ({
-    n: keyToN(k),
-    title: tabs[k].title,
-    url: tabs[k].url
-  }));
-}
-
-const notify = icon => {
-  getCurrentTab(tab => chrome.browserAction.setBadgeText({text: icon.text}));
 }
 
 const run = (functionName, args) => {

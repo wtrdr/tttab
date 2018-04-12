@@ -4,28 +4,13 @@
 const MASTER_KEY = 't';
 const MASTER_CMD = MASTER_KEY + MASTER_KEY + MASTER_KEY;
 const FUNCTIONS = [
-  {name: 'init',    pattern: /^$/,         icon: {text: 'ttt'},  isEnd: false},
-
-  {name: 'copy',    pattern: /^c$/,        icon: {text: 'tttc'}, isEnd: false},
-  {name: 'copy-n',  pattern: /^c([0-9])$/, icon: {text: 'good'}, isEnd: true},
-
-  {name: 'paste',   pattern: /^v$/,        icon: {text: 'tttv'}, isEnd: false},
-  {name: 'paste-n', pattern: /^v([0-9])$/, icon: {text: 'good'}, isEnd: true},
-
-  {name: 'list',    pattern: /^l$/,        icon: {text: 'list'}, isEnd: true},
+  {name: 'init',   pattern: /^$/,         icon: {text: 'ttt'},  isEnd: false},
+  {name: 'play-n', pattern: /^([0-9])$/,  icon: {text: 'good'}, isEnd: true},
+  {name: 'rec',    pattern: /^r$/,        icon: {text: 'tttr'}, isEnd: false},
+  {name: 'rec-n',  pattern: /^r([0-9])$/, icon: {text: 'good'}, isEnd: true}
 ]
 
 // private
-const executable = current => {
-  return current.startsWith(MASTER_CMD);
-}
-
-const acceptable = (current, key) => {
-  if (executable(current)) return true;
-  if (key === MASTER_KEY) return true;
-  return false;
-}
-
 const parse = str => {
   return str.substr(MASTER_CMD.length);
 }
@@ -37,7 +22,7 @@ const findFunction = cmd => {
 const createArgs = (cmd, func) => {
   const matched = cmd.match(func.pattern);
   if (!matched) return [];
-  return matched.filter(m => m !== cmd);
+  return matched.slice(1);
 }
 
 const createMsg = (f, a, i) => {
@@ -62,6 +47,16 @@ const send = (cmd, func) => {
 }
 
 // public
+const executable = current => {
+  return current.startsWith(MASTER_CMD);
+}
+
+const acceptable = (current, key) => {
+  if (executable(current)) return true;
+  if (key === MASTER_KEY) return true;
+  return false;
+}
+
 const exec = current => {
   const cmd = parse(current);
   const func = findFunction(cmd);
