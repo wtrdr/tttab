@@ -24,12 +24,16 @@ const restoreTab = n => {
 
 const getSavedTabs = callback => {
   chrome.storage.local.get(null, entries => {
-    const tabs = Object.keys(entries).map(k => ({
-      n: keyToN(k),
-      title: entries[k].title,
-      url: entries[k].url,
-      favIconUrl: entries[k].favIconUrl,
-    }));
+    const tabs = Object.keys(entries).reduce((map, k) => {
+      const n = keyToN(k);
+      map[n] = {
+        n: n,
+        title: entries[k].title,
+        url: entries[k].url,
+        favIconUrl: entries[k].favIconUrl
+      }
+      return map;
+    }, {});
     callback(tabs);
   });
 }
