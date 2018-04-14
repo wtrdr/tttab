@@ -39,7 +39,10 @@ const getSavedTabs = callback => {
 }
 
 const notify = icon => {
-  getCurrentTab(tab => chrome.browserAction.setBadgeText({text: icon.text}));
+  getCurrentTab(tab => {
+    chrome.browserAction.setBadgeBackgroundColor({color: '#51b11d'})
+    chrome.browserAction.setBadgeText({text: icon.text})
+  });
 }
 
 // private
