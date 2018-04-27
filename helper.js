@@ -3,7 +3,7 @@
 const TTTAB_URL_ = 'tttab-url-';
 
 const getCurrentTab = callback => {
-  chrome.tabs.query({active: true}, tabs => callback(tabs[0]));
+  chrome.tabs.query({active: true, currentWindow: true}, tabs => callback(tabs[0]));
 }
 
 const saveTab = (n, tab) => {
