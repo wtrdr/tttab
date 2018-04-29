@@ -8,9 +8,10 @@ This is Chrome Extension to controll your tab easily.
 
 1. Type `tttr[0-9]`.  
     Save your favoriate tab.  
-    You can see a [tttr] sign on the extension icon.
+    You can see a [tttr] sign on the extension icon when you are on saving mode.
 1. Type `ttt[0-9]`.  
-    Restore your saved tab on a new window.  
+    Restore your saved tab on a new window.
+    You can see a [ttt] sign on the extensions icon when you are on restoring mode.
 1. Press `Ctrl + Shift + T`.  
     You can see a list which has your tabs url.  
 
