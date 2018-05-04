@@ -1,26 +1,21 @@
 'use strict';
 
 // constants
-const MASTER_KEY = 't';
-const MASTER_CMD = MASTER_KEY + MASTER_KEY + MASTER_KEY;
 const FUNCTIONS = [
-  {name: 'init',   pattern: /^$/,         icon: {text: 'ttt'},  isEnd: false},
-  {name: 'play-n', pattern: /^([0-9])$/,  icon: {text: 'good'}, isEnd: true},
-  {name: 'rec',    pattern: /^r$/,        icon: {text: 'tttr'}, isEnd: false},
-  {name: 'rec-n',  pattern: /^r([0-9])$/, icon: {text: 'good'}, isEnd: true}
+  {name: 'echo',   pattern: /^(t{1,3})$/,    icon: null,           isEnd: false},
+  {name: 'play-n', pattern: /^ttt([0-9])$/,  icon: {text: 'good'}, isEnd: true},
+  {name: 'rec',    pattern: /^tttr$/,        icon: {text: 'tttr'}, isEnd: false},
+  {name: 'rec-n',  pattern: /^tttr([0-9])$/, icon: {text: 'good'}, isEnd: true},
+  {name: null,     pattern: /^ttt.+$/,       icon: {text: '?'},    isEnd: true}
 ]
 
 // private
-const parse = str => {
-  return str.substr(MASTER_CMD.length);
+const findFunction = current => {
+  return FUNCTIONS.find(f => current.match(f.pattern));
 }
 
-const findFunction = cmd => {
-  return FUNCTIONS.find(f => cmd.match(f.pattern));
-}
-
-const createArgs = (cmd, func) => {
-  const matched = cmd.match(func.pattern);
+const args = (func, current) => {
+  const matched = current.match(func.pattern);
   if (!matched) return [];
   return matched.slice(1);
 }
@@ -33,44 +28,32 @@ const sendToBackground = msg => {
   chrome.runtime.sendMessage(null, msg);
 }
 
-const sendIconToBackground = text => {
-  sendToBackground(createMsg(null, null, {text: text}));
+const sendIconToBackground = icon => {
+  sendToBackground(createMsg(null, null, icon));
 }
 
-const send = (cmd, func) => {
-  if (!func) {
-    questionNotification();
-    return true;
+const send = (func, current) => {
+  if(func.name) {
+    sendToBackground(createMsg(func.name, args(func, current)));
   }
-  sendToBackground(createMsg(func.name, createArgs(cmd, func), func.icon));
+  if(func.icon) {
+    sendIconToBackground(func.icon);
+  }
   return func.isEnd;
 }
 
 // public
 const executable = current => {
-  return current.startsWith(MASTER_CMD);
-}
-
-const acceptable = (current, key) => {
-  if (executable(current)) return true;
-  if (key === MASTER_KEY) return true;
-  return false;
+  const func = findFunction(current);
+  if (!func) return false;
+  return true;
 }
 
 const exec = current => {
-  const cmd = parse(current);
-  const func = findFunction(cmd);
-  return send(cmd, func);
+  const func = findFunction(current);
+  return send(func, current);
 }
 
 const resetNotification = () => {
-  sendIconToBackground('');
-}
-
-const questionNotification = () => {
-  sendIconToBackground('?');
-}
-
-const exclamationNotification = () => {
-  sendIconToBackground('!');
+  sendIconToBackground({text: ''});
 }

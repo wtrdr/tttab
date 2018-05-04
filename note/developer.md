@@ -79,3 +79,10 @@ If you use `<img src="images/myimage.png">` tag, you need to put `myimage.png` f
 
 (Refer files)[https://developer.chrome.com/extensions/overview#relative-urls]
 
+## Colors
+
+light     = #97CF78
+dark      = #ECFBE4
+middle    = #CEF6BA
+back      = #AED896
+text back = #51B11D

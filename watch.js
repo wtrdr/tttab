@@ -7,21 +7,18 @@ const ignore = tagName => {
   return ["input", "textarea", "select", "button"].includes(tagName.toLowerCase());
 }
 
-const _tttab = current => {
-  if (executed) {
-    executed = false;
-    resetNotification();
-  }
-  if (!executable(current)) return false;
-  if (!exec(current)) return false;
-  executed = true;
-  return true;
+const reset = () => {
+  resetNotification();
+  current = '';
+  executed = false;
 }
 
 const tttab = key => {
-  current = acceptable(current, key) ? (current + key) : ''
-  if (!_tttab(current)) return;
-  current = '';
+  if (executed) reset();
+  current = current + key
+  if (!executable(current)) return reset();
+  if (!exec(current)) return;
+  executed = true;
 }
 
 window.addEventListener(
