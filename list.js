@@ -1,5 +1,7 @@
 'use strict';
 
+const ITEM_SEED_NUMBERS = ['1','hr','2','hr','3','hr','4','hr','5','hr','6','hr','7','hr','8','hr','9','hr','0']
+
 const toLink = (templateCommand, tab) => {
   const cloned = templateCommand.cloneNode(true);
   cloned.getElementsByClassName('tabItem__index')[0].innerHTML = tab.n;
@@ -25,17 +27,31 @@ const findTemplates = () => {
   }
 }
 
-const toItem = (templates, n, tabs) => {
-  const tab = tabs[n];
-  if (!tab) return toCommand(templates.command, n);
-  return toLink(templates.link, tab);
+const toItem = (templates, tab, n) => {
+  if (n === 'hr') return templates.hr.cloneNode(false);
+  if (tab) return toLink(templates.link, tab);
+  return toCommand(templates.command, n);
+}
+
+const toItems = (tabs) => {
+  const templates = findTemplates();
+  return ITEM_SEED_NUMBERS.map(n => toItem(templates, tabs[n], n));
+}
+
+const addTabOpenerByShortcutKey = (tabs) => {
+  const validateNumbers = ITEM_SEED_NUMBERS.filter(n => tabs[n]);
+  window.addEventListener(
+    'keydown', event => {
+      const keyStr = event.key + '';
+      if (!validateNumbers.includes(keyStr)) return true;
+      restoreTab(keyStr);
+      return true;
+    }
+  );
 }
 
 getSavedTabs(tabs => {
   const tabList = document.getElementsByClassName("tabList")[0]; 
-  const templates = findTemplates();
-  ['1','2','3','4','5','6','7','8','9','0'].forEach(n => {
-    tabList.appendChild(toItem(templates, n, tabs));
-    if (n !== '0') tabList.appendChild(templates.hr.cloneNode(false));
-  });
+  toItems(tabs).forEach((item) => tabList.appendChild(item));
+  addTabOpenerByShortcutKey(tabs);
 });
