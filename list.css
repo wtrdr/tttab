@@ -51,6 +51,10 @@ body {
   margin-left: 10px;
   font-size: 13.5pt;
 }
+.head__favIcon {
+  height: 32px;
+  width: 32px;
+}
 .link .link__head {
   color:#666666;
 }

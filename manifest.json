@@ -1,7 +1,7 @@
 {
   "name": "tttab",
   "description" : "Remember And Restore Your Favorite WebPage.",
-  "version": "2.0",
+  "version": "2.1",
   "manifest_version": 2,
   "permissions": ["tabs", "storage"],
   "content_scripts": [
