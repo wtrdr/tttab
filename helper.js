@@ -2,22 +2,23 @@
 
 const TTTAB_URL_ = 'tttab-url-';
 
-const getCurrentTab = callback => {
-  chrome.tabs.query({active: true, currentWindow: true}, tabs => callback(tabs[0]));
+const saveTab = (n, callback = () => {}) => {
+  getCurrentTab(tab => {
+    const key = nToKey(n);
+    chrome.storage.local.set({
+      [key]: val(tab)
+    }, callback)
+  });
 }
 
-const saveTab = (n, tab) => {
-  const key = nToKey(n);
-  chrome.storage.local.set({
-    [key]: val(tab)
-  })
-}
-
-const restoreTab = (n, notify = true) => {
+const restoreTab = (n, notifyRequired = true) => {
   const key = nToKey(n);
   chrome.storage.local.get(key, entry => {
     const tab = entry[key];
-    if (notify && !tab) return notify({text: '!'});
+    if (!tab) {
+      if (notifyRequired) notify({text: '!'});
+      return
+    }
     chrome.tabs.create({url: tab.url});
   });
 }
@@ -43,13 +44,15 @@ const getSavedTabs = callback => {
 }
 
 const notify = icon => {
-  getCurrentTab(tab => {
-    chrome.browserAction.setBadgeBackgroundColor({color: '#51b11d'})
-    chrome.browserAction.setBadgeText({text: icon.text})
-  });
+  chrome.browserAction.setBadgeBackgroundColor({color: '#51b11d'})
+  chrome.browserAction.setBadgeText({text: icon.text})
 }
 
 // private
+const getCurrentTab = callback => {
+  chrome.tabs.query({active: true, currentWindow: true}, tabs => callback(tabs[0]));
+}
+
 const val = tab => {
   return {
     title: tab.title,

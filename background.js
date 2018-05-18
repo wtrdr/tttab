@@ -6,7 +6,7 @@ const echo = str => {
 }
 
 const recN = n => {
-  getCurrentTab(tab => saveTab(n, tab));
+  saveTab(n);
 }
 
 const playN = n => {
