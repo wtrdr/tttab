@@ -48,6 +48,10 @@ const notify = icon => {
   chrome.browserAction.setBadgeText({text: icon.text})
 }
 
+const duplicationTab = () => {
+  getCurrentTab(tab => chrome.tabs.create({url: tab.url, active: false}));
+}
+
 // private
 const getCurrentTab = callback => {
   chrome.tabs.query({active: true, currentWindow: true}, tabs => callback(tabs[0]));

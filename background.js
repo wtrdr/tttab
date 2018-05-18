@@ -17,11 +17,16 @@ const expand = () => {
   restoreAllTab();
 }
 
+const dup = () => {
+  duplicationTab();
+}
+
 const selectFunction = name => {
   if (name === 'echo')   return echo;
   if (name === 'rec-n')  return recN;
   if (name === 'play-n') return playN;
   if (name === 'expand') return expand;
+  if (name === 'dup')    return dup;
   return () => {}; // nothing to do.
 }
 

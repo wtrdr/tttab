@@ -7,6 +7,7 @@ const FUNCTIONS = [
   {name: 'rec',    pattern: /^tttr$/,        icon: {text: 'tttr'}, isEnd: false},
   {name: 'rec-n',  pattern: /^tttr([0-9])$/, icon: {text: 'good'}, isEnd: true},
   {name: 'expand', pattern: /^ttte$/,        icon: {text: 'good'}, isEnd: true},
+  {name: 'dup',    pattern: /^tttt$/,        icon: {text: 'good'}, isEnd: true},
   {name: null,     pattern: /^ttt.+$/,       icon: {text: '?'},    isEnd: true}
 ]
 
