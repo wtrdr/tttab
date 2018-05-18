@@ -21,8 +21,8 @@ This is Chrome Extension to controll your tab easily.
 
     After you open the list.
 
-    1. Type `[0-9]` (some number).
-       (If saved list item.) Restore your saved tab on a new tab.  
+    1. Type `[0-9]` (some number).   
+       (If saved list item.) Restore your saved tab on a new tab.   
        (If not saved list item.) Save current url to the number.
 
 ## NOTE
