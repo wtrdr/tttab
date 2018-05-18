@@ -13,10 +13,15 @@ const playN = n => {
   restoreTab(n);
 }
 
+const expand = () => {
+  restoreAllTab();
+}
+
 const selectFunction = name => {
   if (name === 'echo')   return echo;
   if (name === 'rec-n')  return recN;
   if (name === 'play-n') return playN;
+  if (name === 'expand') return expand;
   return () => {}; // nothing to do.
 }
 

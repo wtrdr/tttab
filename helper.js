@@ -13,13 +13,17 @@ const saveTab = (n, tab) => {
   })
 }
 
-const restoreTab = n => {
+const restoreTab = (n, notify = true) => {
   const key = nToKey(n);
   chrome.storage.local.get(key, entry => {
     const tab = entry[key];
-    if (!tab) return notify({text: '!'});
+    if (notify && !tab) return notify({text: '!'});
     chrome.tabs.create({url: tab.url});
   });
+}
+
+const restoreAllTab = () => {
+  [1,2,3,4,5,6,7,8,9,0].forEach(n => restoreTab(n, false));
 }
 
 const getSavedTabs = callback => {
